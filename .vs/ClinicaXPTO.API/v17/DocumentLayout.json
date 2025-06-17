@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Utilizador\\Documents\\Projeto AW - Cl\u00EDnicaXPTO\\ClinicaXPTO.API\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CF76E969-E4C2-4750-B9E1-15E7CED859D9}|ClinicaXPTO.API.DTO\\ClinicaXPTO.DTO.csproj|c:\\users\\utilizador\\documents\\projeto aw - cl\u00EDnicaxpto\\clinicaxpto.api\\clinicaxpto.api.dto\\utentedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF76E969-E4C2-4750-B9E1-15E7CED859D9}|ClinicaXPTO.API.DTO\\ClinicaXPTO.DTO.csproj|solutionrelative:clinicaxpto.api.dto\\utentedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UtenteDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Utilizador\\Documents\\Projeto AW - Cl\u00EDnicaXPTO\\ClinicaXPTO.API\\ClinicaXPTO.API.DTO\\UtenteDTO.cs",
+              "RelativeDocumentMoniker": "ClinicaXPTO.API.DTO\\UtenteDTO.cs",
+              "ToolTip": "C:\\Users\\Utilizador\\Documents\\Projeto AW - Cl\u00EDnicaXPTO\\ClinicaXPTO.API\\ClinicaXPTO.API.DTO\\UtenteDTO.cs",
+              "RelativeToolTip": "ClinicaXPTO.API.DTO\\UtenteDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T08:27:40.152Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

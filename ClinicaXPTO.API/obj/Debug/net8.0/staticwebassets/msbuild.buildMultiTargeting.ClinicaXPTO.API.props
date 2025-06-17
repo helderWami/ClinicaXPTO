@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ClinicaXPTO.API.props" />
+</Project>

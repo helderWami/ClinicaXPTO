@@ -1,0 +1,47 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ClinicaXPTO.API.Mappers/1.0.0": {
+        "dependencies": {
+          "ClinicaXPTO.API.DTO": "1.0.0",
+          "ClinicaXPTO.API.Models": "1.0.0"
+        },
+        "runtime": {
+          "ClinicaXPTO.API.Mappers.dll": {}
+        }
+      },
+      "ClinicaXPTO.API.DTO/1.0.0": {
+        "runtime": {
+          "ClinicaXPTO.API.DTO.dll": {}
+        }
+      },
+      "ClinicaXPTO.API.Models/1.0.0": {
+        "runtime": {
+          "ClinicaXPTO.API.Models.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ClinicaXPTO.API.Mappers/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ClinicaXPTO.API.DTO/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ClinicaXPTO.API.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

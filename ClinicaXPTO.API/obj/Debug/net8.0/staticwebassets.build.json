@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "C6AyJhqx1RRnTltX9wScYIpYffmlZf5KbpuKqJiyjps=",
+  "Source": "ClinicaXPTO.API",
+  "BasePath": "_content/ClinicaXPTO.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

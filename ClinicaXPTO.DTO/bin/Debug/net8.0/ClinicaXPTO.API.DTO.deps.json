@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ClinicaXPTO.API.DTO/1.0.0": {
+        "runtime": {
+          "ClinicaXPTO.API.DTO.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ClinicaXPTO.API.DTO/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
