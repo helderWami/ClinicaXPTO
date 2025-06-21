@@ -1,11 +1,6 @@
-﻿using ClinicaXPTO.API.DAL;
-using ClinicaXPTO.API.Mappers;
+﻿using ClinicaXPTO.Shared.Interfaces.Services;
+using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -13,36 +8,62 @@ namespace ClinicaXPTO.API.Controllers
     [Route("api/itemPedido")]
     public class ItemPedidoController : ControllerBase
     {
-        private readonly ClinicaXPTODbContext _context;
+        private readonly IItemPedidoService _itemPedidoService;
 
-        public ItemPedidoController(ClinicaXPTODbContext context)
+        public ItemPedidoController(IItemPedidoService itemPedidoService)
         {
-            _context = context;
+            _itemPedidoService = itemPedidoService;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllItemAsync()
         {
-            var itemPedido = _context.ItemPedidos.ToList().Select( i => i.ToItemPedido());
-
-            return Ok(itemPedido);
+            var items = await _itemPedidoService.GetAllAsync();
+            return Ok(items);
         }
 
-        [HttpGet("{id}")]
-
-        public IActionResult GetById([FromRoute] int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var itemPedido = _context.ItemPedidos.Find(id);
-
-            if (itemPedido == null)
+            var item = await _itemPedidoService.GetByIdAsync(id);
+            if (item == null)
             {
                 return NotFound();
             }
-
-            return Ok(itemPedido.ToItemPedido());
-
+            return Ok(item);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] ItemPedidoDTO itemPedido)
+        {
+            if (itemPedido == null)
+            {
+                return BadRequest("ItemPedido nao pode ser null");
+            }
+            var createdItem = await _itemPedidoService.CreateAsync(itemPedido);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdItem.Id }, createdItem);
+        }
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] AtualizarItemPedidoDTO itemPedido)
+        {
+            if (itemPedido == null)
+            {
+                return BadRequest("ItemPedido nao pode ser null");
+            }
+            var updatedItem = await _itemPedidoService.UpdateAsync(id, itemPedido);
+            return Ok(updatedItem);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deleted = await _itemPedidoService.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

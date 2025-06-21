@@ -1,11 +1,7 @@
-﻿using ClinicaXPTO.API.DAL;
-using ClinicaXPTO.API.Mappers;
+﻿using ClinicaXPTO.Shared.Interfaces.Services;
+using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -14,35 +10,62 @@ namespace ClinicaXPTO.API.Controllers
 
     public class UtilizadorController : ControllerBase
     {
-
-        private readonly ClinicaXPTODbContext _context;
-
-        public UtilizadorController(ClinicaXPTODbContext context)
+        private readonly IUtilizadorService _utilizadorService;
+        public UtilizadorController(IUtilizadorService utilizadorService)
         {
-            _context = context;
+            _utilizadorService = utilizadorService;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var utilizador = _context.Utilizadores.ToList().Select(u => u.ToUtilizadorDTO());
-
-            return Ok(utilizador);
+            var utilizadores = await _utilizadorService.GetAllAsync();
+            return Ok(utilizadores);
         }
 
-        [HttpGet("{id}")]
-
-        public IActionResult GetById([FromRoute] int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var utilizador = _context.Utilizadores.Find(id);
-
+            var utilizador = await _utilizadorService.GetByIdAsync(id);
             if (utilizador == null)
             {
                 return NotFound();
             }
-
-            return Ok(utilizador.ToUtilizadorDTO());
+            return Ok(utilizador);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] CriarUtilizadorDTO utilizador)
+        {
+            if (utilizador == null)
+            {
+                return BadRequest("Utilizador nao pode ser null");
+            }
+            var createdUtilizador = await _utilizadorService.CreateAsync(utilizador);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdUtilizador.Id }, createdUtilizador);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] AtualizarUtilizadorDTO utilizador)
+        {
+            if (utilizador == null)
+            {
+                return BadRequest("Utilizador nao pode ser null");
+            }
+            var updatedUtilizador = await _utilizadorService.UpdateAsync(id, utilizador);
+            return Ok(updatedUtilizador);
+
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deleted = await _utilizadorService.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

@@ -1,11 +1,6 @@
-﻿using ClinicaXPTO.API.DAL;
-using ClinicaXPTO.API.Mappers;
+﻿using ClinicaXPTO.Shared.Interfaces.Services;
+using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -13,38 +8,66 @@ namespace ClinicaXPTO.API.Controllers
     [Route("api/SubsistemaSaude")]
     public class SubsistemaSaudeController : ControllerBase
     {
-        private readonly ClinicaXPTODbContext _context;
-
-        public SubsistemaSaudeController(ClinicaXPTODbContext context)
+        private readonly ISubsistemaSaudeService _subsistemaSaudeService;
+        public SubsistemaSaudeController(ISubsistemaSaudeService subsistemaSaudeService)
         {
-            _context = context;
+            _subsistemaSaudeService = subsistemaSaudeService;
         }
 
         [HttpGet]
-
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var subsistemaSaude = _context.SubsistemasSaude.ToList().Select(s => s.ToSubistemaSaude());
-
-            return Ok(subsistemaSaude);
-
+            var subsistemas = await _subsistemaSaudeService.GetAllAsync();
+            return Ok(subsistemas);
         }
 
-        [HttpGet("{id}")]
-
-        public IActionResult GetById([FromRoute] int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var subsistemaSaude = _context.SubsistemasSaude.Find(id);
-
-            if (subsistemaSaude == null)
+            var subsistema = await _subsistemaSaudeService.GetByIdAsync(id);
+            if (subsistema == null)
             {
                 return NotFound();
             }
-
-            return Ok(subsistemaSaude.ToSubistemaSaude());
-
+            return Ok(subsistema);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] CriarSubsistemaSaudeDTO subsistemaSaude)
+        {
+            if (subsistemaSaude == null)
+            {
+                return BadRequest("SubsistemaSaude nao pode ser null");
+            }
+            var createdSubsistema = await _subsistemaSaudeService.CreateAsync(subsistemaSaude);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdSubsistema.Id }, createdSubsistema);
+        }
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] AtualizarSubsistemaSaudeDTO subsistemaSaude)
+        {
+            if (subsistemaSaude == null)
+            {
+                return BadRequest("SubsistemaSaude nao pode ser null");
+            }
+            var updatedSubsistema = await _subsistemaSaudeService.UpdateAsync(id, subsistemaSaude);
+            if (updatedSubsistema == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedSubsistema);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deleted = await _subsistemaSaudeService.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+
+        }
     }
 }

@@ -2,7 +2,6 @@
 using ClinicaXPTO.Shared.Interfaces.Repositories;
 using ClinicaXPTO.Models;
 using ClinicaXPTO.DTO;
-using ClinicaXPTO.Mappers;
 using Mapster;
 
 namespace ClinicaXPTO.Service.Services
@@ -20,14 +19,14 @@ namespace ClinicaXPTO.Service.Services
         {
             var itemPedidos = await _itemPedidoRepository.GetAllAsync();
 
-            return itemPedidos.Select(i => ItemPedidoMappers.ToItemPedidoDto(i)).ToList();
+            return itemPedidos.Adapt<IEnumerable<ItemPedidoDTO>>();
         }
 
         public async Task<ItemPedidoDTO> GetByIdAsync(int id)
         {
             var itemPedido = await _itemPedidoRepository.GetByIdAsync(id);
 
-            return itemPedido.ToItemPedidoDto();
+            return itemPedido.Adapt<ItemPedidoDTO>();
         }
 
         public async Task<ItemPedidoDTO> CreateAsync(ItemPedidoDTO itemPedidoDto)

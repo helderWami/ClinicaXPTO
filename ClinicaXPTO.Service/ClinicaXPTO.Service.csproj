@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="8.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClinicaXPTO.API.DTO\ClinicaXPTO.DTO.csproj" />
-    <ProjectReference Include="..\ClinicaXPTO.API.Models\ClinicaXPTO.Models.csproj" />
-    <ProjectReference Include="..\ClínicaXPTO.API.DAL\ClínicaXPTO.DAL.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.DTO\ClinicaXPTO.DTO.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.Models\ClinicaXPTO.Models.csproj" />
+    <ProjectReference Include="..\ClínicaXPTO.DAL\ClinicaXPTO.DAL.csproj" />
   </ItemGroup>
 
 </Project>

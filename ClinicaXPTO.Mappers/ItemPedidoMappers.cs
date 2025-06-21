@@ -1,12 +1,7 @@
-﻿using ClinicaXPTO.API.DTO;
-using ClinicaXPTO.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ClinicaXPTO.DTO;
+using ClinicaXPTO.Models;
 
-namespace ClinicaXPTO.API.Mappers
+namespace ClinicaXPTO.Mappers
 {
     public static class ItemPedidoMappers
     {

@@ -1621,6 +1621,20 @@
         "runtime": {
           "bin/placeholder/ClinicaXPTO.Models.dll": {}
         }
+      },
+      "ClinicaXPTO.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "ClinicaXPTO.DTO": "1.0.0",
+          "ClinicaXPTO.Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ClinicaXPTO.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ClinicaXPTO.Shared.dll": {}
+        }
       }
     }
   },
@@ -4735,38 +4749,48 @@
     },
     "ClinicaXPTO.DTO/1.0.0": {
       "type": "project",
-      "path": "../ClinicaXPTO.API.DTO/ClinicaXPTO.DTO.csproj",
-      "msbuildProject": "../ClinicaXPTO.API.DTO/ClinicaXPTO.DTO.csproj"
+      "path": "../ClinicaXPTO.DTO/ClinicaXPTO.DTO.csproj",
+      "msbuildProject": "../ClinicaXPTO.DTO/ClinicaXPTO.DTO.csproj"
     },
     "ClinicaXPTO.Models/1.0.0": {
       "type": "project",
-      "path": "../ClinicaXPTO.API.Models/ClinicaXPTO.Models.csproj",
-      "msbuildProject": "../ClinicaXPTO.API.Models/ClinicaXPTO.Models.csproj"
+      "path": "../ClinicaXPTO.Models/ClinicaXPTO.Models.csproj",
+      "msbuildProject": "../ClinicaXPTO.Models/ClinicaXPTO.Models.csproj"
+    },
+    "ClinicaXPTO.Shared/1.0.0": {
+      "type": "project",
+      "path": "../ClinicaXPTO.Shared/ClinicaXPTO.Shared.csproj",
+      "msbuildProject": "../ClinicaXPTO.Shared/ClinicaXPTO.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "ClinicaXPTO.DTO >= 1.0.0",
       "ClinicaXPTO.Models >= 1.0.0",
+      "ClinicaXPTO.Shared >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 9.0.5",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.5"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Utilizador\\.nuget\\packages\\": {}
+    "C:\\Users\\helto\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClínicaXPTO.API.DAL\\ClínicaXPTO.DAL.csproj",
-      "projectName": "ClínicaXPTO.DAL",
-      "projectPath": "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClínicaXPTO.API.DAL\\ClínicaXPTO.DAL.csproj",
-      "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClínicaXPTO.API.DAL\\obj\\",
+      "projectUniqueName": "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClínicaXPTO.DAL\\ClinicaXPTO.DAL.csproj",
+      "projectName": "ClinicaXPTO.DAL",
+      "projectPath": "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClínicaXPTO.DAL\\ClinicaXPTO.DAL.csproj",
+      "packagesPath": "C:\\Users\\helto\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClínicaXPTO.DAL\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\helto\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4780,11 +4804,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClinicaXPTO.API.DTO\\ClinicaXPTO.DTO.csproj": {
-              "projectPath": "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClinicaXPTO.API.DTO\\ClinicaXPTO.DTO.csproj"
+            "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClinicaXPTO.Models\\ClinicaXPTO.Models.csproj": {
+              "projectPath": "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClinicaXPTO.Models\\ClinicaXPTO.Models.csproj"
             },
-            "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClinicaXPTO.API.Models\\ClinicaXPTO.Models.csproj": {
-              "projectPath": "C:\\Users\\Utilizador\\Documents\\Projeto AW - ClínicaXPTO\\ClinicaXPTO.API\\ClinicaXPTO.API.Models\\ClinicaXPTO.Models.csproj"
+            "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClinicaXPTO.Shared\\ClinicaXPTO.Shared.csproj": {
+              "projectPath": "C:\\Users\\helto\\OneDrive\\Ambiente de Trabalho\\Projects\\C#\\Helder\\ClinicaXPTO\\ClinicaXPTO.Shared\\ClinicaXPTO.Shared.csproj"
             }
           }
         }
@@ -4798,7 +4822,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -4835,7 +4860,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

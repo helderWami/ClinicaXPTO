@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClinicaXPTO.API.DTO\ClinicaXPTO.DTO.csproj" />
-    <ProjectReference Include="..\ClinicaXPTO.API.Mappers\ClinicaXPTO.Mappers.csproj" />
-    <ProjectReference Include="..\ClinicaXPTO.API.Models\ClinicaXPTO.Models.csproj" />
-    <ProjectReference Include="..\ClinicaXPTO.API.Service\ClinicaXPTO.Service.csproj" />
-    <ProjectReference Include="..\ClínicaXPTO.API.DAL\ClínicaXPTO.DAL.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.DTO\ClinicaXPTO.DTO.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.Mappers\ClinicaXPTO.Mappers.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.Models\ClinicaXPTO.Models.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.Service\ClinicaXPTO.Service.csproj" />
+    <ProjectReference Include="..\ClínicaXPTO.DAL\ClinicaXPTO.DAL.csproj" />
   </ItemGroup>
 
 </Project>

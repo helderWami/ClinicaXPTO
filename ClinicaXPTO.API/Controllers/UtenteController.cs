@@ -1,12 +1,6 @@
-﻿using ClinicaXPTO.API.DAL;
-using ClinicaXPTO.API.Mappers;
+﻿using ClinicaXPTO.Shared.Interfaces.Services;
+using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -18,37 +12,62 @@ namespace ClinicaXPTO.API.Controllers
         [Route("api/utente")]
         public class UtenteController : ControllerBase
         {
-            private readonly ClinicaXPTODbContext _context;
-            public UtenteController(ClinicaXPTODbContext context)
+            private readonly IUtenteService _utenteService;
+            public UtenteController(IUtenteService utenteService)
             {
-
-                _context = context;
-
+                _utenteService = utenteService;
             }
 
             [HttpGet]
-
-            public IActionResult GetAll()
+            public async Task<IActionResult> GetAllAsync()
             {
-                var utentes = _context.Utentes.ToList().Select(u => u.ToUtenteDto());
-
+                var utentes = await _utenteService.GetAllAsync();
                 return Ok(utentes);
             }
 
-            [HttpGet("{id}")]
-            public IActionResult GetById([FromRoute] int id)
+            [HttpGet("{id:int}")]
+            public async Task<IActionResult> GetByIdAsync(int id)
             {
-                var utente = _context.Utentes.Find(id);
-
+                var utente = await _utenteService.GetByIdAsync(id);
                 if (utente == null)
                 {
                     return NotFound();
                 }
-
-                return Ok(utente.ToUtenteDto());
+                return Ok(utente);
             }
 
+            [HttpPost]
+            public async Task<IActionResult> CreateAsync([FromBody] CriarUtenteDTO utente)
+            {
+                if (utente == null)
+                {
+                    return BadRequest("Utente nao pode ser null");
+                }
+                var createdUtente = await _utenteService.CreateAsync(utente);
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = createdUtente.Id }, createdUtente);
+            }
 
+            [HttpPut("{id:int}")]
+            public async Task<IActionResult> UpdateAsync(int id, [FromBody] AtualizarUtenteDTO utente)
+            {
+                if (utente == null)
+                {
+                    return BadRequest("Utente nao pode ser null");
+                }
+                var updatedUtente = await _utenteService.UpdateAsync(id, utente);
+                return Ok(updatedUtente);
+            }
+
+            [HttpDelete("{id:int}")]
+            public async Task<IActionResult> DeleteAsync(int id)
+            {
+                var deleted = await _utenteService.DeleteAsync(id);
+                if (!deleted)
+                {
+                    return NotFound();
+                }
+                return NoContent();
+            }
         }
     }
 

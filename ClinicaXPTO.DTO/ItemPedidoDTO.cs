@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClinicaXPTO.API.DTO
+namespace ClinicaXPTO.DTO
 {
     public class ItemPedidoDTO
     {

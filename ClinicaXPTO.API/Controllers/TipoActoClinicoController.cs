@@ -1,11 +1,6 @@
-﻿using ClinicaXPTO.API.DAL;
-using ClinicaXPTO.API.Mappers;
+﻿using ClinicaXPTO.Shared.Interfaces.Services;
+using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -13,35 +8,61 @@ namespace ClinicaXPTO.API.Controllers
     [Route("api/tipoActoClinico")]
     public class TipoActoClinicoController : ControllerBase
     {
-        private readonly ClinicaXPTODbContext _context;
-
-        public TipoActoClinicoController(ClinicaXPTODbContext context)
+        private readonly ITipoActoClinicoService _tipoActoClinicoService;
+        public TipoActoClinicoController(ITipoActoClinicoService tipoActoClinicoService)
         {
-            _context = context;
+            _tipoActoClinicoService = tipoActoClinicoService;
         }
 
         [HttpGet]
-
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var tipoactoclinico = _context.TipoActoClinicos.ToList().Select(t => t.ToActoClinico());
-
-            return Ok(tipoactoclinico);
+            var tipos = await _tipoActoClinicoService.GetAllAsync();
+            return Ok(tipos);
         }
 
-        [HttpGet("{id}")]
-
-        public IActionResult GetById([FromRoute] int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var actoclinico = _context.TipoActoClinicos.Find(id);
-
-            if (actoclinico == null)
+            var tipo = await _tipoActoClinicoService.GetByIdAsync(id);
+            if (tipo == null)
             {
                 return NotFound();
             }
+            return Ok(tipo);
+        }
 
-            return Ok(actoclinico.ToActoClinico());
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] CriarTipoActoClinico tipoActoClinico)
+        {
+            if (tipoActoClinico == null)
+            {
+                return BadRequest("TipoActoClinico nao pode ser null");
+            }
+            var createdTipo = await _tipoActoClinicoService.CreateAsync(tipoActoClinico);
+            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdTipo.Id }, createdTipo);
+        }
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] AtualizarTipoActoClinicoDTO tipoActoClinico)
+        {
+            if (tipoActoClinico == null)
+            {
+                return BadRequest("TipoActoClinico nao pode ser null");
+            }
+            var updatedTipo = await _tipoActoClinicoService.UpdateAsync(id, tipoActoClinico);
+            return Ok(updatedTipo);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deleted = await _tipoActoClinicoService.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }

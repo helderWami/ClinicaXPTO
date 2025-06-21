@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClinicaXPTO.API.DTO\ClinicaXPTO.DTO.csproj" />
-    <ProjectReference Include="..\ClinicaXPTO.API.Models\ClinicaXPTO.Models.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.DTO\ClinicaXPTO.DTO.csproj" />
+    <ProjectReference Include="..\ClinicaXPTO.Models\ClinicaXPTO.Models.csproj" />
   </ItemGroup>
 
 </Project>

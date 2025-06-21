@@ -1,5 +1,4 @@
-﻿using System;
-using ClinicaXPTO.Models;
+﻿using ClinicaXPTO.Models;
 
 namespace ClinicaXPTO.Shared.Interfaces.Repositories
 {
