@@ -31,7 +31,7 @@ namespace ClinicaXPTO.Service.Services
         {
             var profissional = profissionalDto.Adapt<Profissional>();
             var novoProfessional = await _profissionalRepository.AddAsync(profissional);
-
+            
             return novoProfessional.Adapt<ProfissionalDTO>();
         }
 
