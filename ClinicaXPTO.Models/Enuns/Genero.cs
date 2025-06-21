@@ -1,4 +1,4 @@
-﻿namespace ClinicaXPTO.Models
+﻿namespace ClinicaXPTO.Models.Enuns
 {
     public enum Genero
     {
