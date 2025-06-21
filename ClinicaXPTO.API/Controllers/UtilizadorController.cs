@@ -23,7 +23,7 @@ namespace ClinicaXPTO.API.Controllers
             return Ok(utilizadores);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObeterUtilizadorPorId")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var utilizador = await _utilizadorService.GetByIdAsync(id);
@@ -42,7 +42,7 @@ namespace ClinicaXPTO.API.Controllers
                 return BadRequest("Utilizador nao pode ser null");
             }
             var createdUtilizador = await _utilizadorService.CreateAsync(utilizador);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdUtilizador.Id }, createdUtilizador);
+            return CreatedAtRoute("ObeterUtilizadorPorId", new { id = createdUtilizador.Id }, createdUtilizador);
         }
 
         [HttpPut("{id:int}")]

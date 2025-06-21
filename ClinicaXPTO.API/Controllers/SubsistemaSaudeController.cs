@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicaXPTO.API.Controllers
 {
     [ApiController]
-    [Route("api/SubsistemaSaude")]
+    [Route("api/subsistema-saude")]
     public class SubsistemaSaudeController : ControllerBase
     {
         private readonly ISubsistemaSaudeService _subsistemaSaudeService;
@@ -21,7 +21,7 @@ namespace ClinicaXPTO.API.Controllers
             return Ok(subsistemas);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObeterSubsistemaSaudePorId")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var subsistema = await _subsistemaSaudeService.GetByIdAsync(id);
@@ -40,7 +40,7 @@ namespace ClinicaXPTO.API.Controllers
                 return BadRequest("SubsistemaSaude nao pode ser null");
             }
             var createdSubsistema = await _subsistemaSaudeService.CreateAsync(subsistemaSaude);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdSubsistema.Id }, createdSubsistema);
+            return CreatedAtRoute("ObeterSubsistemaSaudePorId", new { id = createdSubsistema.Id }, createdSubsistema);
         }
 
         [HttpPut("{id:int}")]

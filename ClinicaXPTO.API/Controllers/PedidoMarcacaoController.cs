@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicaXPTO.API.Controllers
 {
     [ApiController]
-    [Route("api/pedidoMarcacao")]
+    [Route("api/pedido-marcacao")]
     public class PedidoMarcacaoController : ControllerBase
     {
         private readonly IPedidoMarcacaoService _pedidoMarcacaoService;
@@ -21,7 +21,7 @@ namespace ClinicaXPTO.API.Controllers
             return Ok(pedidos);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObeterPedidoMarcacaoPorId")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var pedido = await _pedidoMarcacaoService.GetByIdAsync(id);
@@ -40,7 +40,7 @@ namespace ClinicaXPTO.API.Controllers
                 return BadRequest("Pedido nao pode ser null");
             }
             var createdPedido = await _pedidoMarcacaoService.CreateAsync(pedido);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = createdPedido.Id }, createdPedido);
+            return CreatedAtRoute("ObeterPedidoMarcacaoPorId", new { id = createdPedido.Id }, createdPedido);
         }
 
         [HttpPut("{id:int}")]
