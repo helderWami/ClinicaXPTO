@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using ClinicaXPTO.Models.Enuns;
+using System.ComponentModel;
 
 namespace ClinicaXPTO.Models
 {
@@ -10,29 +11,53 @@ namespace ClinicaXPTO.Models
         [Key]
         public int Id { get; set; }
 
+        // NULL para utentes anónimos, preenchido para registados
         public int? UtilizadorId { get; set; }
         [ForeignKey("UtilizadorId")]
         public Utilizador Utilizador { get; set; }
 
         [Required]
-        public string NumeroUtente { get; set; }
+        [StringLength(20)]
+        public string NumeroUtente { get; set; } = default!;
 
-        public string Fotografia { get; set; }
+        [StringLength(500)]
+        public string Fotografia { get; set; } = default!;
 
         [Required]
-        public string NomeCompleto { get; set; }
+        [StringLength(200)]
+        public string NomeCompleto { get; set; } = default!;
 
-        public DateTime? DataNascimento { get; set; }
+        [Required] 
+        public DateTime DataNascimento { get; set; }
 
-        public Genero? Genero { get; set; }
+        [Required] 
+        public Genero Genero { get; set; }
 
-        public string Telemovel { get; set; }
+        [Phone]
+        [StringLength(15)]
+        public string Telemovel { get; set; } = default!;
 
+        [Required]
         [EmailAddress]
-        public string EmailContacto { get; set; }
+        [StringLength(100)]
+        public string EmailContacto { get; set; } = default!;
 
-        public string Morada { get; set; }
+        [StringLength(500)]
+        public string Morada { get; set; } = default!;
 
-        public ICollection<PedidoMarcacao> Pedidos { get; set; }
+        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        public EstadoUtente EstadoUtente { get; set; }
+        public bool Ativo { get; set; } = false;
+
+        // Relacionamentos
+        public ICollection<PedidoMarcacao> Pedidos { get; set; } = new List<PedidoMarcacao>();
+
+        // Propriedades calculadas
+        [NotMapped]
+        public bool EhRegistado => UtilizadorId.HasValue;
+
+        [NotMapped]
+        public int Idade => DateTime.Today.Year - DataNascimento.Year -
+                           (DateTime.Today.DayOfYear < DataNascimento.DayOfYear ? 1 : 0);
     }
 }

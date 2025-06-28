@@ -13,24 +13,31 @@ namespace ClinicaXPTO.Models
         [Required]
         public int PedidoMarcacaoId { get; set; }
         [ForeignKey("PedidoMarcacaoId")]
-        public PedidoMarcacao PedidoMarcacao { get; set; }
+        public PedidoMarcacao PedidoMarcacao { get; set; } = default!;
 
         [Required]
         public int TipoActoClinicoId { get; set; }
         [ForeignKey("TipoActoClinicoId")]
-        public TipoActoClinico TipoActoClinico { get; set; }
+        public TipoActoClinico TipoActoClinico { get; set; } = default!;
 
         [Required]
         public int SubsistemaSaudeId { get; set; }
         [ForeignKey("SubsistemaSaudeId")]
-        public SubsistemaSaude SubsistemaSaude { get; set; }
+        public SubsistemaSaude SubsistemaSaude { get; set; } = default!;
 
         public int? ProfissionalId { get; set; }
         [ForeignKey("ProfissionalId")]
-        public Profissional Profissional { get; set; }
+        public Profissional Profissional { get; set; } = default!;
 
         public TimeSpan? HorarioSolicitado { get; set; }
 
-        public string Observacoes { get; set; }
+        [StringLength(500)]
+        public string Observacoes { get; set; } = string.Empty;
+
+        // Propriedades calculadas
+        [NotMapped]
+        public string DescricaoCompleta =>
+            $"{TipoActoClinico?.Descricao} - {SubsistemaSaude?.Nome}" +
+            (Profissional != null ? $" - {Profissional.NomeCompleto}" : "");
     }
 }

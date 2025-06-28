@@ -10,14 +10,20 @@ namespace ClinicaXPTO.Models
         [Key]
         public int Id { get; set; }
 
-        [Required, EmailAddress]
-        public string Email { get; set; }
+        [Required]
+        [EmailAddress]
+        [StringLength(100)]
+        public string Email { get; set; } = default!;
 
         [Required]
-        public string Senha { get; set; }
+        [StringLength(255)]
+        public string Senha { get; set; } = default!;
 
         [Required]
-        public Perfil Perfil { get; set; }
+        public Perfil Perfil { get; set; } 
+
+        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        public bool Ativo { get; set; } = true;
 
     }
 }
