@@ -17,7 +17,7 @@ namespace ClinicaXPTO.Mappers
             {
                 Id = utilizadorModel.Id,
                 Email = utilizadorModel.Email,
-                Perfil = utilizadorModel.Perfil.ToString()
+                //Perfil = utilizadorModel.Perfil.ToString()
             };
 
         }

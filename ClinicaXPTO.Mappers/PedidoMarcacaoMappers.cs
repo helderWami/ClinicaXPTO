@@ -20,7 +20,7 @@ namespace ClinicaXPTO.Mappers
                 DataPedido = pedidoMarcacaoModel.DataPedido,
                 InicioIntervalo = pedidoMarcacaoModel.InicioIntervalo,  
                 FimIntervalo  = pedidoMarcacaoModel.FimIntervalo,
-                Estado = pedidoMarcacaoModel.Estado.ToString(),
+                //Estado = pedidoMarcacaoModel.Estado.ToString(),
                 Observacoes = pedidoMarcacaoModel.Observacoes,
                 Itens = pedidoMarcacaoModel.Itens?.Select( i => i.ToItemPedido()).ToList() 
 

@@ -19,7 +19,7 @@ namespace ClinicaXPTO.Mappers
                 NumeroUtente = utenteModel.NumeroUtente,
                 NomeCompleto = utenteModel.NomeCompleto,
                 DataNascimento = utenteModel.DataNascimento,
-                Genero = utenteModel.Genero.HasValue ? utenteModel.Genero.ToString() : null,
+                //Genero = utenteModel.Genero.HasValue ? utenteModel.Genero.ToString() : null,
                 Telemovel = utenteModel.Telemovel,
                 EmailContacto = utenteModel.EmailContacto,
                 Morada = utenteModel.Morada
