@@ -40,9 +40,30 @@ namespace ClinicaXPTO.DAL.Repositories
 
         public async Task<bool> UpdateAsync(Profissional profissional)
         {
-            _context.Profissionais.Update(profissional);
-            await _context.SaveChangesAsync();
-            return true;
+            if (profissional == null)
+                throw new ArgumentNullException(nameof(profissional));
+
+            var existingProfissional = await _context.Profissionais
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == profissional.Id);
+
+            if (existingProfissional == null)
+                throw new KeyNotFoundException($"Profissional com ID {profissional.Id} não encontrado para atualização.");
+
+            try
+            {
+                _context.Entry(profissional).State = EntityState.Modified;
+                var rowsAffected = await _context.SaveChangesAsync();
+                return rowsAffected > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException("A entidade foi modificada por outro processo. Recarregue os dados e tente novamente.");
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException($"Erro ao atualizar profissional: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)

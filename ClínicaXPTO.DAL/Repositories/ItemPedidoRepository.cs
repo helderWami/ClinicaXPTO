@@ -40,14 +40,30 @@ namespace ClinicaXPTO.DAL.Repositories
 
         public async Task<bool> UpdateAsync(ItemPedido itemPedido)
         {
-            var existingItemPedido = await _context.ItemPedidos.AsNoTracking().FirstOrDefaultAsync(i => i.Id == itemPedido.Id);
+            if (itemPedido == null)
+                throw new ArgumentNullException(nameof(itemPedido));
+
+            var existingItemPedido = await _context.ItemPedidos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == itemPedido.Id);
+
             if (existingItemPedido == null)
+                throw new KeyNotFoundException($"ItemPedido com ID {itemPedido.Id} não encontrado para atualização.");
+
+            try
             {
-                throw new KeyNotFoundException($"ItemPedido com ID {itemPedido.Id} nao encontrado.");
+                _context.Entry(itemPedido).State = EntityState.Modified;
+                var rowsAffected = await _context.SaveChangesAsync();
+                return rowsAffected > 0;
             }
-            _context.ItemPedidos.Update(itemPedido);
-            await _context.SaveChangesAsync();
-            return true;
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException("A entidade foi modificada por outro processo. Recarregue os dados e tente novamente.");
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException($"Erro ao atualizar item do pedido: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)

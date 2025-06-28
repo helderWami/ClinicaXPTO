@@ -39,9 +39,30 @@ namespace ClinicaXPTO.DAL.Repositories
 
         public async Task<bool> UpdateAsync(TipoActoClinico tipoActoClinico)
         {
-            _context.TipoActoClinicos.Update(tipoActoClinico);
-            await _context.SaveChangesAsync();
-            return true;
+            if (tipoActoClinico == null)
+                throw new ArgumentNullException(nameof(tipoActoClinico));
+
+            var existingTipoActo = await _context.TipoActoClinicos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == tipoActoClinico.Id);
+
+            if (existingTipoActo == null)
+                throw new KeyNotFoundException($"TipoActoClinico com ID {tipoActoClinico.Id} não encontrado para atualização.");
+
+            try
+            {
+                _context.Entry(tipoActoClinico).State = EntityState.Modified;
+                var rowsAffected = await _context.SaveChangesAsync();
+                return rowsAffected > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException("A entidade foi modificada por outro processo. Recarregue os dados e tente novamente.");
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException($"Erro ao atualizar tipo de acto clínico: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)

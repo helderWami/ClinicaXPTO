@@ -39,9 +39,30 @@ namespace ClinicaXPTO.DAL.Repositories
 
         public async Task<bool> UpdateAsync(SubsistemaSaude subsistemaSaude)
         {
-            _context.SubsistemasSaude.Update(subsistemaSaude);
-            await _context.SaveChangesAsync();
-            return true;
+            if (subsistemaSaude == null)
+                throw new ArgumentNullException(nameof(subsistemaSaude));
+
+            var existingSubsistema = await _context.SubsistemasSaude
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == subsistemaSaude.Id);
+
+            if (existingSubsistema == null)
+                throw new KeyNotFoundException($"SubsistemaSaude com ID {subsistemaSaude.Id} não encontrado para atualização.");
+
+            try
+            {
+                _context.Entry(subsistemaSaude).State = EntityState.Modified;
+                var rowsAffected = await _context.SaveChangesAsync();
+                return rowsAffected > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException("A entidade foi modificada por outro processo. Recarregue os dados e tente novamente.");
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException($"Erro ao atualizar subsistema de saúde: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)

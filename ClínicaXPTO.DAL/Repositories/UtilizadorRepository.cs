@@ -34,9 +34,30 @@ namespace ClinicaXPTO.DAL.Repositories
         }
         public async Task<bool> UpdateAsync(Utilizador utilizador)
         {
-            _context.Utilizadores.Update(utilizador);
-            await _context.SaveChangesAsync();
-            return true;
+            if (utilizador == null)
+                throw new ArgumentNullException(nameof(utilizador));
+
+            var existingUtilizador = await _context.Utilizadores
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == utilizador.Id);
+
+            if (existingUtilizador == null)
+                throw new KeyNotFoundException($"Utilizador com ID {utilizador.Id} não encontrado para atualização.");
+
+            try
+            {
+                _context.Entry(utilizador).State = EntityState.Modified;
+                var rowsAffected = await _context.SaveChangesAsync();
+                return rowsAffected > 0;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException("A entidade foi modificada por outro processo. Recarregue os dados e tente novamente.");
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new InvalidOperationException($"Erro ao atualizar utilizador: {ex.Message}", ex);
+            }
         }
         public async Task<bool> DeleteAsync(int id)
         {
@@ -48,6 +69,25 @@ namespace ClinicaXPTO.DAL.Repositories
             _context.Utilizadores.Remove(utilizador);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<Utilizador> ObterPorEmailAsync(string email)
+        {
+            var utilizador = await _context.Utilizadores
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+            if (utilizador == null)
+            {
+                throw new KeyNotFoundException($"Utilizador com Email {email} nao encontrado.");
+            }
+
+            return utilizador;
+        }
+
+        public async Task<bool> ExisteEmailAsync(string email)
+        {
+            return await _context.Utilizadores
+                .AnyAsync(u => u.Email == email);
         }
     }
 }
