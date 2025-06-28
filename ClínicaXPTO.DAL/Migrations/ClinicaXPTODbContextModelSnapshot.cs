@@ -35,7 +35,8 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("PedidoMarcacaoId")
                         .HasColumnType("int");
@@ -70,7 +71,19 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AgendadoPorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataAgendamento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataHoraAgendada")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DataPedido")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataRealizacao")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Estado")
@@ -84,12 +97,20 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("RealizadoPorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("UtenteId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AgendadoPorId");
+
+                    b.HasIndex("RealizadoPorId");
 
                     b.HasIndex("UtenteId");
 
@@ -104,13 +125,26 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Especialidade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NomeCompleto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroOrdem")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -125,9 +159,26 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -142,12 +193,29 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<TimeSpan?>("DuracaoPadrao")
                         .HasColumnType("time");
+
+                    b.Property<string>("Observacoes")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal?>("Preco")
                         .HasPrecision(10, 2)
@@ -166,35 +234,50 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DataNascimento")
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailContacto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("EstadoUtente")
+                        .HasColumnType("int");
 
                     b.Property<string>("Fotografia")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("Genero")
+                    b.Property<int>("Genero")
                         .HasColumnType("int");
 
                     b.Property<string>("Morada")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("NomeCompleto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NumeroUtente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Telemovel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int?>("UtilizadorId")
                         .HasColumnType("int");
@@ -214,16 +297,24 @@ namespace ClinicaXPTO.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Perfil")
                         .HasColumnType("int");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -265,11 +356,23 @@ namespace ClinicaXPTO.DAL.Migrations
 
             modelBuilder.Entity("ClinicaXPTO.Models.PedidoMarcacao", b =>
                 {
+                    b.HasOne("ClinicaXPTO.Models.Utilizador", "AgendadoPor")
+                        .WithMany()
+                        .HasForeignKey("AgendadoPorId");
+
+                    b.HasOne("ClinicaXPTO.Models.Utilizador", "RealizadoPor")
+                        .WithMany()
+                        .HasForeignKey("RealizadoPorId");
+
                     b.HasOne("ClinicaXPTO.Models.Utente", "Utente")
                         .WithMany("Pedidos")
                         .HasForeignKey("UtenteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AgendadoPor");
+
+                    b.Navigation("RealizadoPor");
 
                     b.Navigation("Utente");
                 });

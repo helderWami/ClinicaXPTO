@@ -17,8 +17,11 @@ namespace ClinicaXPTO.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Especialidade = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NomeCompleto = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Especialidade = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    NumeroOrdem = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,7 +34,11 @@ namespace ClinicaXPTO.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Codigo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,9 +51,13 @@ namespace ClinicaXPTO.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Codigo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     DuracaoPadrao = table.Column<TimeSpan>(type: "time", nullable: true),
-                    Preco = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: true)
+                    Preco = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: true),
+                    Observacoes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,9 +70,11 @@ namespace ClinicaXPTO.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Perfil = table.Column<int>(type: "int", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Senha = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Perfil = table.Column<int>(type: "int", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,14 +88,17 @@ namespace ClinicaXPTO.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UtilizadorId = table.Column<int>(type: "int", nullable: true),
-                    NumeroUtente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fotografia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NomeCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Genero = table.Column<int>(type: "int", nullable: true),
-                    Telemovel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailContacto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Morada = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NumeroUtente = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Fotografia = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    NomeCompleto = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Genero = table.Column<int>(type: "int", nullable: false),
+                    Telemovel = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    EmailContacto = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Morada = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstadoUtente = table.Column<int>(type: "int", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,8 +120,13 @@ namespace ClinicaXPTO.DAL.Migrations
                     DataPedido = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InicioIntervalo = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FimIntervalo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataHoraAgendada = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Estado = table.Column<int>(type: "int", nullable: false),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Observacoes = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    AgendadoPorId = table.Column<int>(type: "int", nullable: true),
+                    DataAgendamento = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RealizadoPorId = table.Column<int>(type: "int", nullable: true),
+                    DataRealizacao = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,6 +137,16 @@ namespace ClinicaXPTO.DAL.Migrations
                         principalTable: "Utentes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PedidoMarcacoes_Utilizadores_AgendadoPorId",
+                        column: x => x.AgendadoPorId,
+                        principalTable: "Utilizadores",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PedidoMarcacoes_Utilizadores_RealizadoPorId",
+                        column: x => x.RealizadoPorId,
+                        principalTable: "Utilizadores",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -129,7 +160,7 @@ namespace ClinicaXPTO.DAL.Migrations
                     SubsistemaSaudeId = table.Column<int>(type: "int", nullable: false),
                     ProfissionalId = table.Column<int>(type: "int", nullable: true),
                     HorarioSolicitado = table.Column<TimeSpan>(type: "time", nullable: true),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Observacoes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,6 +209,16 @@ namespace ClinicaXPTO.DAL.Migrations
                 name: "IX_ItemPedidos_TipoActoClinicoId",
                 table: "ItemPedidos",
                 column: "TipoActoClinicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PedidoMarcacoes_AgendadoPorId",
+                table: "PedidoMarcacoes",
+                column: "AgendadoPorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PedidoMarcacoes_RealizadoPorId",
+                table: "PedidoMarcacoes",
+                column: "RealizadoPorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PedidoMarcacoes_UtenteId",
