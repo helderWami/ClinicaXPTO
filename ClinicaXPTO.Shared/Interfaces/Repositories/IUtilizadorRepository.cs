@@ -9,5 +9,7 @@ namespace ClinicaXPTO.Shared.Interfaces.Repositories
         Task<Utilizador> AddAsync(Utilizador utilizador);
         Task<bool> UpdateAsync(Utilizador utilizador);
         Task<bool> DeleteAsync(int id);
+        Task<Utilizador> ObterPorEmailAsync(string email);
+        Task<bool> ExisteEmailAsync(string email);
     }
 }
