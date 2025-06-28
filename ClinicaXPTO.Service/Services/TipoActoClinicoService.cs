@@ -36,8 +36,24 @@ namespace ClinicaXPTO.Service.Services
 
         public async Task<bool> UpdateAsync(int id, AtualizarTipoActoClinicoDTO tipoActoClinicoDto)
         {
-            var tipoActoClinico = tipoActoClinicoDto.Adapt<TipoActoClinico>();
-            return await _tipoActoClinicoRepository.UpdateAsync(tipoActoClinico);
+            if (tipoActoClinicoDto == null)
+                throw new ArgumentNullException(nameof(tipoActoClinicoDto));
+
+            if (id <= 0)
+                throw new ArgumentException("ID deve ser maior que zero.", nameof(id));
+
+            // Verificar se o tipo de acto clínico existe
+            var tipoActoExistente = await _tipoActoClinicoRepository.GetByIdAsync(id);
+
+            // Mapear apenas os campos que devem ser atualizados
+            tipoActoExistente.Descricao = tipoActoClinicoDto.Descricao;
+            tipoActoExistente.Codigo = tipoActoClinicoDto.Codigo;
+            tipoActoExistente.DuracaoPadrao = tipoActoClinicoDto.DuracaoPadrao;
+            tipoActoExistente.Preco = tipoActoClinicoDto.Preco;
+            tipoActoExistente.Observacoes = tipoActoClinicoDto.Observacoes;
+            tipoActoExistente.Ativo = tipoActoClinicoDto.Ativo;
+
+            return await _tipoActoClinicoRepository.UpdateAsync(tipoActoExistente);
         }
 
         public async Task<bool> DeleteAsync(int id)

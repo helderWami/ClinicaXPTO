@@ -39,8 +39,23 @@ namespace ClinicaXPTO.Service.Services
 
         public async Task<bool> UpdateAsync(int id, AtualizarItemPedidoDTO itemPedidoDto)
         {
-            var itemPedido = itemPedidoDto.Adapt<ItemPedido>();
-            return await _itemPedidoRepository.UpdateAsync(itemPedido);
+            if (itemPedidoDto == null)
+                throw new ArgumentNullException(nameof(itemPedidoDto));
+
+            if (id <= 0)
+                throw new ArgumentException("ID deve ser maior que zero.", nameof(id));
+
+            // Verificar se o item pedido existe
+            var itemPedidoExistente = await _itemPedidoRepository.GetByIdAsync(id);
+
+            // Mapear apenas os campos que devem ser atualizados
+            itemPedidoExistente.TipoActoClinicoId = itemPedidoDto.TipoActoClinicoId;
+            itemPedidoExistente.SubsistemaSaudeId = itemPedidoDto.SubsistemaSaudeId;
+            itemPedidoExistente.ProfissionalId = itemPedidoDto.ProfissionalId;
+            itemPedidoExistente.HorarioSolicitado = itemPedidoDto.HorarioSolicitado;
+            itemPedidoExistente.Observacoes = itemPedidoDto.Observacoes;
+
+            return await _itemPedidoRepository.UpdateAsync(itemPedidoExistente);
         }
 
         public async Task<bool> DeleteAsync(int id)

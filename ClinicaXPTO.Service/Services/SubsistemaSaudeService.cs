@@ -36,8 +36,21 @@ namespace ClinicaXPTO.Service.Services
 
         public async Task<bool> UpdateAsync(int id, AtualizarSubsistemaSaudeDTO subsistemaSaudeDto)
         {
-            var subsistemaSaude = subsistemaSaudeDto.Adapt<SubsistemaSaude>();
-            return await _subsistemaSaudeRepository.UpdateAsync(subsistemaSaude);
+            if (subsistemaSaudeDto == null)
+                throw new ArgumentNullException(nameof(subsistemaSaudeDto));
+
+            if (id <= 0)
+                throw new ArgumentException("ID deve ser maior que zero.", nameof(id));
+
+            // Verificar se o subsistema existe
+            var subsistemaExistente = await _subsistemaSaudeRepository.GetByIdAsync(id);
+
+            // Mapear apenas os campos que devem ser atualizados
+            subsistemaExistente.Nome = subsistemaSaudeDto.Nome;
+            subsistemaExistente.Descricao = subsistemaSaudeDto.Descricao;
+            subsistemaExistente.Ativo = subsistemaSaudeDto.Ativo;
+
+            return await _subsistemaSaudeRepository.UpdateAsync(subsistemaExistente);
         }
 
         public async Task<bool> DeleteAsync(int id)
