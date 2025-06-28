@@ -50,12 +50,12 @@ namespace ClinicaXPTO.API.Controllers
             {
                 return BadRequest("SubsistemaSaude nao pode ser null");
             }
-            var updatedSubsistema = await _subsistemaSaudeService.UpdateAsync(id, subsistemaSaude);
-            if (updatedSubsistema == null)
+            var updated = await _subsistemaSaudeService.UpdateAsync(id, subsistemaSaude);
+            if (!updated)
             {
                 return NotFound();
             }
-            return Ok(updatedSubsistema);
+            return Ok("SubsistemaSaude atualizado com sucesso");
         }
 
         [HttpDelete("{id:int}")]

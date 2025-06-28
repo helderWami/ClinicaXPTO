@@ -68,7 +68,96 @@ namespace ClinicaXPTO.API.Controllers
                 }
                 return NoContent();
             }
+
+            [HttpPost("anonimo")]
+            public async Task<IActionResult> CriarUtenteAnonimoAsync([FromBody] UtenteDTO utente)
+            {
+                if (utente == null)
+                {
+                    return BadRequest("Dados do utente são obrigatórios");
+                }
+
+                try
+                {
+                    var utenteAnonimo = await _utenteService.CriarUtenteAnonimoAsync(utente);
+                    return Ok(utenteAnonimo);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Erro ao criar utente anônimo: {ex.Message}");
+                }
+            }
+
+            [HttpPut("{id:int}/converter-registado")]
+            public async Task<IActionResult> ConverterParaRegistadoAsync(int id, [FromBody] ConverterUtenteRequest request)
+            {
+                if (request == null)
+                {
+                    return BadRequest("Dados do utilizador são obrigatórios");
+                }
+
+                try
+                {
+                    var utenteConvertido = await _utenteService.ConverterParaRegistadoAsync(id, request.UtilizadorId);
+                    return Ok(utenteConvertido);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Erro ao converter utente: {ex.Message}");
+                }
+            }
+
+            [HttpGet("validar-numero/{numeroUtente}")]
+            public async Task<IActionResult> ValidarNumeroUtenteDisponivelAsync(string numeroUtente)
+            {
+                try
+                {
+                    var disponivel = await _utenteService.ValidarNumeroUtenteDisponivelAsync(numeroUtente);
+                    return Ok(new { Disponivel = disponivel });
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Erro ao validar número do utente: {ex.Message}");
+                }
+            }
+
+            [HttpGet("validar-email/{email}")]
+            public async Task<IActionResult> ValidarEmailDisponivelAsync(string email)
+            {
+                try
+                {
+                    var disponivel = await _utenteService.ValidarEmailDisponivelAsync(email);
+                    return Ok(new { Disponivel = disponivel });
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Erro ao validar email: {ex.Message}");
+                }
+            }
+
+            [HttpGet("pesquisar")]
+            public async Task<IActionResult> PesquisarUtentesAsync([FromQuery] string termo)
+            {
+                if (string.IsNullOrWhiteSpace(termo))
+                {
+                    return BadRequest("Termo de pesquisa é obrigatório");
+                }
+
+                try
+                {
+                    var utentes = await _utenteService.PesquisarUtentesAsync(termo);
+                    return Ok(utentes);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Erro ao pesquisar utentes: {ex.Message}");
+                }
+            }
         }
     }
 
+    public class ConverterUtenteRequest
+    {
+        public int UtilizadorId { get; set; }
+    }
 }

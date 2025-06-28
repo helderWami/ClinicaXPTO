@@ -40,7 +40,7 @@ namespace ClinicaXPTO.API.Controllers
                 return BadRequest("TipoActoClinico nao pode ser null");
             }
             var createdTipo = await _tipoActoClinicoService.CreateAsync(tipoActoClinico);
-            return CreatedAtRoute("ObeterTipoActoClinicoPorId)", new { id = createdTipo.Id }, createdTipo);
+            return CreatedAtRoute("ObeterTipoActoClinicoPorId", new { id = createdTipo.Id }, createdTipo);
         }
 
         [HttpPut("{id:int}")]

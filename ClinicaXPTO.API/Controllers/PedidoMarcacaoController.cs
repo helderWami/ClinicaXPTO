@@ -1,6 +1,7 @@
 ﻿using ClinicaXPTO.Shared.Interfaces.Services;
 using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
+using ClinicaXPTO.Models.Enuns;
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -64,5 +65,130 @@ namespace ClinicaXPTO.API.Controllers
             }
             return NoContent();
         }
+
+        [HttpPost("anonimo")]
+        public async Task<IActionResult> CriarPedidoAnonimoAsync([FromBody] CriarPedidoAnonimoRequest request)
+        {
+            if (request?.DadosUtente == null || request?.PedidoMarcacao == null)
+            {
+                return BadRequest("Dados do utente e pedido são obrigatórios");
+            }
+
+            try
+            {
+                var pedidoCriado = await _pedidoMarcacaoService.CriarPedidoAnonimoAsync(request.DadosUtente, request.PedidoMarcacao);
+                return Ok(pedidoCriado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao criar pedido anônimo: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id:int}/agendar")]
+        public async Task<IActionResult> AgendarPedidoAsync(int id, [FromBody] AgendarPedidoDto agendarPedidoDto)
+        {
+            if (agendarPedidoDto == null)
+            {
+                return BadRequest("Dados de agendamento são obrigatórios");
+            }
+
+            if (agendarPedidoDto.PedidoId != id)
+            {
+                return BadRequest("ID do pedido não confere");
+            }
+
+            try
+            {
+                var resultado = await _pedidoMarcacaoService.AgendarPedidoAsync(agendarPedidoDto);
+                if (!resultado)
+                {
+                    return NotFound("Pedido não encontrado ou não pode ser agendado");
+                }
+                return Ok("Pedido agendado com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao agendar pedido: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id:int}/realizar")]
+        public async Task<IActionResult> RealizarPedidoAsync(int id, [FromBody] RealizarPedidoRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Dados de realização são obrigatórios");
+            }
+
+            try
+            {
+                var resultado = await _pedidoMarcacaoService.RealizarPedidoAsync(id, request.UtilizadorId, request.DataRealizacao);
+                if (!resultado)
+                {
+                    return NotFound("Pedido não encontrado ou não pode ser marcado como realizado");
+                }
+                return Ok("Pedido marcado como realizado");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao realizar pedido: {ex.Message}");
+            }
+        }
+
+        [HttpGet("utente/{utenteId:int}/historico")]
+        public async Task<IActionResult> ObterHistoricoPorUtenteAsync(int utenteId)
+        {
+            try
+            {
+                var historico = await _pedidoMarcacaoService.ObterHistoricoPorUtenteAsync(utenteId);
+                return Ok(historico);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter histórico: {ex.Message}");
+            }
+        }
+
+        [HttpGet("pesquisar")]
+        public async Task<IActionResult> PesquisarPedidosAsync([FromQuery] string? numeroUtente, [FromQuery] string? nomeUtente, [FromQuery] EstadoPedido? estado)
+        {
+            try
+            {
+                var pedidos = await _pedidoMarcacaoService.PesquisarPedidosAsync(numeroUtente ?? string.Empty, nomeUtente ?? string.Empty, estado);
+                return Ok(pedidos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao pesquisar pedidos: {ex.Message}");
+            }
+        }
+
+        [HttpGet("pendentes")]
+        public async Task<IActionResult> ObterPedidosPendentesAsync()
+        {
+            try
+            {
+                var pedidosPendentes = await _pedidoMarcacaoService.ObterPedidosPendentesAsync();
+                return Ok(pedidosPendentes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter pedidos pendentes: {ex.Message}");
+            }
+        }
+    }
+
+    // Classes auxiliares para requests
+    public class CriarPedidoAnonimoRequest
+    {
+        public required CriarUtenteDTO DadosUtente { get; set; }
+        public required CriarPedidoMarcacaoDTO PedidoMarcacao { get; set; }
+    }
+
+    public class RealizarPedidoRequest
+    {
+        public int UtilizadorId { get; set; }
+        public DateTime DataRealizacao { get; set; }
     }
 }

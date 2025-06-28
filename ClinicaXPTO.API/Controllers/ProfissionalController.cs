@@ -21,7 +21,7 @@ namespace ClinicaXPTO.API.Controllers
             return Ok(profissionais);
         }
 
-        [HttpGet("{id:int}", Name = "ObterPrfissionalPorId")]
+        [HttpGet("{id:int}", Name = "ObterProfissionalPorId")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var profissional = await _profissionalService.GetByIdAsync(id);
@@ -40,7 +40,7 @@ namespace ClinicaXPTO.API.Controllers
                 return BadRequest("Profissional nao pode ser null");
             }
             var createdProfissional = await _profissionalService.CreateAsync(profissional);
-            return CreatedAtRoute("ObterPrfissionalPorId", new { id = createdProfissional.Id }, createdProfissional);
+            return CreatedAtRoute("ObterProfissionalPorId", new { id = createdProfissional.Id }, createdProfissional);
         }
 
         [HttpPut("{id:int}")]
@@ -50,12 +50,12 @@ namespace ClinicaXPTO.API.Controllers
             {
                 return BadRequest("Profissional nao pode ser null");
             }
-            var updatedProfissional = await _profissionalService.UpdateAsync(id, profissional);
-            if (updatedProfissional == null)
+            var updated = await _profissionalService.UpdateAsync(id, profissional);
+            if (!updated)
             {
                 return NotFound();
             }
-            return Ok(updatedProfissional);
+            return Ok("Profissional atualizado com sucesso");
         }
 
         [HttpDelete("{id:int}")]
