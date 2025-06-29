@@ -76,19 +76,80 @@ namespace ClinicaXPTO.Service.Services
             return await _utilizadorRepository.DeleteAsync(id);
         }
 
-        public Task<UtilizadorDTO> AutenticarAsync(string email, string senha)
+        public async Task<UtilizadorDTO> AutenticarAsync(string email, string senha)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
+                return null;
+
+            try
+            {
+                // Buscar utilizador por email
+                var utilizador = await _utilizadorRepository.ObterPorEmailAsync(email);
+                
+                if (utilizador == null || !utilizador.Ativo)
+                    return null;
+
+                // Verificar se a senha está correta (comparação simples por enquanto)
+                if (utilizador.Senha != senha)
+                    return null;
+
+                // Retornar DTO do utilizador
+                return utilizador.Adapt<UtilizadorDTO>();
+            }
+            catch (Exception)
+            {
+                // Em caso de erro, não expor informações sensíveis
+                return null;
+            }
         }
 
-        public Task<UtilizadorDTO> CriarUtilizadorAsync(string email, string senha, Perfil perfil)
+        public async Task<UtilizadorDTO> CriarUtilizadorAsync(string email, string senha, Perfil perfil)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
+                throw new ArgumentException("Email e senha são obrigatórios");
+
+            // Verificar se o email já existe
+            if (await _utilizadorRepository.ExisteEmailAsync(email))
+                throw new InvalidOperationException("Este email já está registado");
+
+            // Criar novo utilizador
+            var novoUtilizador = new Utilizador
+            {
+                Email = email.ToLower().Trim(),
+                Senha = senha, // Por enquanto sem hash
+                Perfil = perfil,
+                DataCriacao = DateTime.UtcNow,
+                Ativo = true
+            };
+
+            // Salvar no banco de dados
+            var utilizadorSalvo = await _utilizadorRepository.AddAsync(novoUtilizador);
+
+            // Retornar DTO
+            return utilizadorSalvo.Adapt<UtilizadorDTO>();
         }
 
-        public Task<bool> ValidarCredenciaisAsync(string email, string senha)
+        public async Task<bool> ValidarCredenciaisAsync(string email, string senha)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
+                return false;
+
+            try
+            {
+                // Buscar utilizador por email
+                var utilizador = await _utilizadorRepository.ObterPorEmailAsync(email);
+                
+                if (utilizador == null || !utilizador.Ativo)
+                    return false;
+
+                // Verificar se a senha está correta (comparação simples por enquanto)
+                return utilizador.Senha == senha;
+            }
+            catch (Exception)
+            {
+                // Em caso de erro, retornar false
+                return false;
+            }
         }
     }
 }

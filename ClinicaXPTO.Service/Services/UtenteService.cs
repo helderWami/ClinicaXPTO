@@ -7,6 +7,16 @@ using ClinicaXPTO.Models.Enuns;
 
 namespace ClinicaXPTO.Service.Services
 {
+    /// <summary>
+    /// SERVICE DE UTENTES - LÓGICA DE NEGÓCIO
+    /// ======================================
+    /// Esta classe implementa a lógica de negócio para utentes.
+    /// 
+    /// CONVERSÃO DE DADOS:
+    /// - Atualmente usa Mapster (.Adapt<>)
+    /// - Pode ser feita manualmente sem mappers
+    /// - Exemplo de conversão manual comentado abaixo
+    /// </summary>
     public class UtenteService : IUtenteService
     {
         private readonly IUtenteRepository _utenteRepository;
@@ -19,18 +29,80 @@ namespace ClinicaXPTO.Service.Services
         public async Task<IEnumerable<UtenteDTO>> GetAllAsync()
         {
             var utentes = await _utenteRepository.GetAllAsync();
+            
+            // ATUAL: Usando Mapster
             return utentes.Adapt<IEnumerable<UtenteDTO>>();
+            
+            // ALTERNATIVA: Conversão manual (sem mappers)
+            /*
+            return utentes.Select(utente => new UtenteDTO
+            {
+                Id = utente.Id,
+                UtilizadorId = utente.UtilizadorId,
+                NumeroUtente = utente.NumeroUtente,
+                Fotografia = utente.Fotografia,
+                NomeCompleto = utente.NomeCompleto,
+                DataNascimento = utente.DataNascimento,
+                Genero = utente.Genero,
+                Telemovel = utente.Telemovel,
+                EmailContacto = utente.EmailContacto,
+                Morada = utente.Morada,
+                DataCriacao = utente.DataCriacao,
+                Ativo = utente.Ativo
+            });
+            */
         }
 
         public async Task<UtenteDTO> GetByIdAsync(int id)
         {
             var utente = await _utenteRepository.GetByIdAsync(id);
+            
+            // ATUAL: Usando Mapster
             return utente.Adapt<UtenteDTO>();
+            
+            // ALTERNATIVA: Conversão manual
+            /*
+            if (utente == null) return null;
+            
+            return new UtenteDTO
+            {
+                Id = utente.Id,
+                UtilizadorId = utente.UtilizadorId,
+                NumeroUtente = utente.NumeroUtente,
+                Fotografia = utente.Fotografia,
+                NomeCompleto = utente.NomeCompleto,
+                DataNascimento = utente.DataNascimento,
+                Genero = utente.Genero,
+                Telemovel = utente.Telemovel,
+                EmailContacto = utente.EmailContacto,
+                Morada = utente.Morada,
+                DataCriacao = utente.DataCriacao,
+                Ativo = utente.Ativo
+            };
+            */
         }
 
         public async Task<UtenteDTO> CreateAsync(CriarUtenteDTO utenteDto)
         {
+            // ATUAL: Usando Mapster
             var utente = utenteDto.Adapt<Utente>();
+            
+            // ALTERNATIVA: Conversão manual
+            /*
+            var utente = new Utente
+            {
+                NumeroUtente = utenteDto.NumeroUtente,
+                NomeCompleto = utenteDto.NomeCompleto,
+                DataNascimento = utenteDto.DataNascimento,
+                Genero = utenteDto.Genero,
+                Telemovel = utenteDto.Telemovel,
+                EmailContacto = utenteDto.EmailContacto,
+                Morada = utenteDto.Morada,
+                Ativo = true,
+                DataCriacao = DateTime.UtcNow
+            };
+            */
+            
             var novoUtente = await _utenteRepository.AddAsync(utente);
             return novoUtente.Adapt<UtenteDTO>();
         }
