@@ -55,7 +55,35 @@ builder.Services.AddAuthentication(options =>
 // Configuração do Swagger/OpenAPI para documentação da API
 // Permite testar os endpoints diretamente no navegador
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "ClinicaXPTO.API", Version = "v1" });
+
+    // Configuração para JWT
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header usando o esquema Bearer. Exemplo: 'Bearer {token}'",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 // ============================================================================
 // CONFIGURAÇÃO DO BANCO DE DADOS
@@ -103,5 +131,23 @@ app.MapControllers();
 // ============================================================================
 // INICIALIZAÇÃO DA APLICAÇÃO
 // ============================================================================
+// SEED: Criar admin default se não existir nenhum
+using (var scope = app.Services.CreateScope())
+{
+    var utilizadorService = scope.ServiceProvider.GetRequiredService<ClinicaXPTO.Shared.Interfaces.Services.IUtilizadorService>();
+    var admins = await utilizadorService.GetAllAsync();
+    if (!admins.Any(u => u.Perfil == ClinicaXPTO.Models.Enuns.Perfil.Administrador))
+    {
+        await utilizadorService.CreateAsync(new ClinicaXPTO.DTO.CriarUtilizadorDTO
+        {
+            Email = "admin@clinica.com",
+            Senha = "admin123",
+            ConfirmarSenha = "admin123",
+            Perfil = ClinicaXPTO.Models.Enuns.Perfil.Administrador,
+            Ativo = true
+        });
+    }
+}
+
 // Inicia o servidor web e fica à espera de requisições HTTP
 app.Run();
