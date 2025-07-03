@@ -143,5 +143,13 @@ namespace ClinicaXPTO.Shared.Interfaces.Services
         /// <param name="termo">Termo de pesquisa</param>
         /// <returns>Lista de utentes que correspondem ao critério</returns>
         Task<IEnumerable<UtenteDTO>> PesquisarUtentesAsync(string termo);
+
+        /// <summary>
+        /// Atualiza a fotografia do utente
+        /// </summary>
+        /// <param name="utenteId">ID do utente</param>
+        /// <param name="caminhoFotografia">Caminho/URL da fotografia</param>
+        /// <returns>True se atualizado com sucesso</returns>
+        Task<bool> AtualizarFotografiaAsync(int utenteId, string caminhoFotografia);
     }
 }

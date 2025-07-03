@@ -82,6 +82,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Adiciona o middleware de tratamento de erros simples
+app.UseMiddleware<TrataErrosMiddleware>();
+
 // Redireciona HTTP para HTTPS (segurança)
 app.UseHttpsRedirection();
 

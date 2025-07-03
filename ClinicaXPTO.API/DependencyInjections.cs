@@ -68,6 +68,8 @@ namespace ClinicaXPTO.API
             
             services.AddScoped<IAuthService, AuthService>();
 
+            services.AddScoped<IEmailService, EmailService>();
+
             return services;
         }
     }

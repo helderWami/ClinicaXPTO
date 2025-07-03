@@ -177,6 +177,24 @@ namespace ClinicaXPTO.API.Controllers
                 return BadRequest($"Erro ao obter pedidos pendentes: {ex.Message}");
             }
         }
+
+        [HttpGet("{id:int}/exportar-pdf")]
+        public async Task<IActionResult> ExportarPdfAsync(int id)
+        {
+            try
+            {
+                var pdfBytes = await _pedidoMarcacaoService.ExportarMarcacaoParaPdfAsync(id);
+                return File(pdfBytes, "application/pdf", $"marcacao_{id}.pdf");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao exportar PDF: {ex.Message}");
+            }
+        }
     }
 
     // Classes auxiliares para requests

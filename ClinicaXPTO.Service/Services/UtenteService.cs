@@ -190,5 +190,20 @@ namespace ClinicaXPTO.Service.Services
             var utentes = await _utenteRepository.PesquisarPorNomeAsync(termo);
             return utentes.Adapt<IEnumerable<UtenteDTO>>();
         }
+
+        public async Task<bool> AtualizarFotografiaAsync(int utenteId, string caminhoFotografia)
+        {
+            if (utenteId <= 0)
+                throw new ArgumentException("ID deve ser maior que zero.", nameof(utenteId));
+            if (string.IsNullOrWhiteSpace(caminhoFotografia))
+                throw new ArgumentException("O caminho da fotografia não pode ser vazio.", nameof(caminhoFotografia));
+
+            var utente = await _utenteRepository.GetByIdAsync(utenteId);
+            if (utente == null)
+                throw new KeyNotFoundException($"Utente com ID {utenteId} não encontrado.");
+
+            utente.Fotografia = caminhoFotografia;
+            return await _utenteRepository.UpdateAsync(utente);
+        }
     }
 }

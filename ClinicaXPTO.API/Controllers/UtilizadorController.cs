@@ -35,6 +35,7 @@ namespace ClinicaXPTO.API.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Administrador")]
         public async Task<IActionResult> CreateAsync([FromBody] CriarUtilizadorDTO utilizador)
         {
             if (utilizador == null)

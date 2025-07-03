@@ -2,6 +2,8 @@
 using ClinicaXPTO.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace ClinicaXPTO.API.Controllers
 {
@@ -374,6 +376,55 @@ namespace ClinicaXPTO.API.Controllers
                 {
                     return BadRequest($"Erro ao pesquisar utentes: {ex.Message}");
                 }
+            }
+
+            /// <summary>
+            /// ENDPOINT: POST /api/utente/{id}/fotografia
+            /// ==========================================
+            /// Permite o upload de uma fotografia para o utente (anónimo ou registado)
+            ///
+            /// AUTORIZAÇÃO: Público (para anónimos) ou autenticado (para registados)
+            ///
+            /// PARÂMETROS:
+            /// - id: ID do utente
+            /// - ficheiro: Fotografia (multipart/form-data)
+            ///
+            /// RETORNO:
+            /// - 200 OK: Fotografia atualizada
+            /// - 400 Bad Request: Erro no upload
+            /// - 404 Not Found: Utente não encontrado
+            /// </summary>
+            [HttpPost("{id:int}/fotografia")]
+            [AllowAnonymous] // Permite upload para utente anónimo
+            public async Task<IActionResult> UploadFotografiaAsync(int id, [FromForm] IFormFile ficheiro)
+            {
+                if (ficheiro == null || ficheiro.Length == 0)
+                    return BadRequest("Ficheiro não fornecido.");
+
+                // Pasta onde as fotografias serão guardadas
+                var pastaFotografias = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fotografias");
+                if (!Directory.Exists(pastaFotografias))
+                    Directory.CreateDirectory(pastaFotografias);
+
+                // Nome único para o ficheiro
+                var nomeFicheiro = $"utente_{id}_" + Guid.NewGuid().ToString("N") + Path.GetExtension(ficheiro.FileName);
+                var caminhoCompleto = Path.Combine(pastaFotografias, nomeFicheiro);
+
+                // Guardar o ficheiro
+                using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+                {
+                    await ficheiro.CopyToAsync(stream);
+                }
+
+                // Caminho relativo para guardar na BD
+                var caminhoRelativo = $"/fotografias/{nomeFicheiro}";
+
+                // Atualizar o campo fotografia do utente
+                var atualizado = await _utenteService.AtualizarFotografiaAsync(id, caminhoRelativo);
+                if (!atualizado)
+                    return NotFound("Utente não encontrado ou erro ao atualizar fotografia.");
+
+                return Ok(new { mensagem = "Fotografia atualizada com sucesso!", caminho = caminhoRelativo });
             }
         }
     }

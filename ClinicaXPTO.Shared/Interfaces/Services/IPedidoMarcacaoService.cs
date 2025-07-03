@@ -29,5 +29,8 @@ namespace ClinicaXPTO.Shared.Interfaces.Services
 
         // Use Case: Obter pedidos pendentes (para administrativos)
         Task<IEnumerable<PedidoMarcacaoDTO>> ObterPedidosPendentesAsync();
+
+        // Exportação de detalhes para PDF
+        Task<byte[]> ExportarMarcacaoParaPdfAsync(int pedidoId);
     }
 }
