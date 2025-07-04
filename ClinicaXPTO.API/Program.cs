@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ClinicaXPTO.Service.Services;
 
 // ============================================================================
 // PONTO DE ENTRADA DA APLICAÇÃO - CONFIGURAÇÃO INICIAL
@@ -141,12 +142,19 @@ using (var scope = app.Services.CreateScope())
         await utilizadorService.CreateAsync(new ClinicaXPTO.DTO.CriarUtilizadorDTO
         {
             Email = "admin@clinica.com",
-            Senha = "admin123",
+            Senha = HashSenha("admin123"),
             ConfirmarSenha = "admin123",
             Perfil = ClinicaXPTO.Models.Enuns.Perfil.Administrador,
             Ativo = true
         });
     }
+}
+
+string HashSenha(string senha)
+{
+    using var sha256 = System.Security.Cryptography.SHA256.Create();
+    var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(senha));
+    return Convert.ToBase64String(hashedBytes);
 }
 
 // Inicia o servidor web e fica à espera de requisições HTTP
